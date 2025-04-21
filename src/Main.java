@@ -66,15 +66,22 @@ public class Main {
 
         //  Получение по идентификатору;
         System.out.println("\n     Получение по идентификатору:");
-        System.out.println(inMemoryTaskManager.getTaskOfAnyTypeById(0));
-        System.out.println(inMemoryTaskManager.getTaskOfAnyTypeById(1));
-        System.out.println(inMemoryTaskManager.getTaskOfAnyTypeById(2));
-        System.out.println(inMemoryTaskManager.getTaskOfAnyTypeById(3));
-        System.out.println(inMemoryTaskManager.getTaskOfAnyTypeById(4));
-        System.out.println(inMemoryTaskManager.getTaskOfAnyTypeById(5));
-        System.out.println(inMemoryTaskManager.getTaskOfAnyTypeById(6));
-        System.out.println(inMemoryTaskManager.getTaskOfAnyTypeById(7));
-        System.out.println(inMemoryTaskManager.getTaskOfAnyTypeById(8));
+        System.out.println("Получаем задачу с id=1 " + inMemoryTaskManager.getTaskOfAnyTypeById(1));
+        System.out.println("Получаем задачу с id=2 " + inMemoryTaskManager.getTaskOfAnyTypeById(2));
+        System.out.println("Получаем задачу с id=3 " + inMemoryTaskManager.getTaskOfAnyTypeById(3));
+        System.out.println("Получаем задачу с id=4 " + inMemoryTaskManager.getTaskOfAnyTypeById(4));
+        System.out.println("Получаем задачу с id=6 " + inMemoryTaskManager.getTaskOfAnyTypeById(6));
+        System.out.println("Получаем задачу с id=1 " + inMemoryTaskManager.getTaskOfAnyTypeById(1));
+        System.out.println("Получаем задачу с id=2 " + inMemoryTaskManager.getTaskOfAnyTypeById(2));
+        System.out.println("Получаем задачу с id=3 " + inMemoryTaskManager.getTaskOfAnyTypeById(3));
+        System.out.println("Получаем задачу с id=4 " + inMemoryTaskManager.getTaskOfAnyTypeById(4));
+        System.out.println("Получаем задачу с id=6 " + inMemoryTaskManager.getTaskOfAnyTypeById(6));
+        System.out.println("Получаем задачу с id=1 " + inMemoryTaskManager.getTaskOfAnyTypeById(1));
+        System.out.println("Получаем задачу с id=2 " + inMemoryTaskManager.getTaskOfAnyTypeById(2));
+        System.out.println("Получаем задачу с id=3 " + inMemoryTaskManager.getTaskOfAnyTypeById(3));
+        System.out.println("Получаем задачу с id=4 " + inMemoryTaskManager.getTaskOfAnyTypeById(4));
+        System.out.println("Получаем задачу с id=6 " + inMemoryTaskManager.getTaskOfAnyTypeById(6));
+        System.out.println("Смотрим историю задач: " + inMemoryTaskManager.getHistory());
 
         //  Создание. Сам объект должен передаваться в качестве параметра;
         System.out.println("\n     Создание. Сам объект должен передаваться в качестве параметра:");

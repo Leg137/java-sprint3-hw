@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.TreeMap;
 
 /**
@@ -7,6 +9,8 @@ import java.util.TreeMap;
 public class InMemoryTaskManager implements TaskManager {
     private static int Id = 0; // У каждого типа задач есть идентификатор, целое, уникальное для всех типов задач число
     // Возможность хранить задачи всех типов
+    private final List<Task> historyStorage = new LinkedList<>();
+
     private final TreeMap<Integer, Task> taskStorage = new TreeMap<>();
 
     private final TreeMap<Integer, EpicTask> epicTaskStorage = new TreeMap<>();
@@ -19,6 +23,24 @@ public class InMemoryTaskManager implements TaskManager {
 
     static void setId(int id) {
         Id = id;
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        /*List<Task> taskHistory = new ArrayList<>();
+        if (!getHistoryStorage().isEmpty()) {
+            taskHistory = getHistoryStorage();
+        }*/
+        List<Task> tasks = new ArrayList<>();
+        if (!getHistoryStorage().isEmpty()) {
+            tasks.addAll(getHistoryStorage());
+            if (tasks.size() > 10) {
+                return tasks.subList(tasks.size() - 10, tasks.size());
+            } else {
+                return tasks;
+            }
+        }
+        return tasks;
     }
 
     @Override
@@ -84,14 +106,17 @@ public class InMemoryTaskManager implements TaskManager {
      */
     @Override
     public Object getTaskOfAnyTypeById(int id) {
-        Object taskOfAnyKind = null;
+        Task taskOfAnyKind = null;
 
         if (taskStorage.get(id) != null) {
             taskOfAnyKind = taskStorage.get(id);
+            historyStorage.add(taskOfAnyKind);
         } else if (epicTaskStorage.get(id) != null) {
             taskOfAnyKind = epicTaskStorage.get(id);
+            historyStorage.add(taskOfAnyKind);
         } else if (subTaskStorage.get(id) != null) {
             taskOfAnyKind = subTaskStorage.get(id);
+            historyStorage.add(taskOfAnyKind);
         }
         return taskOfAnyKind;
     }
@@ -198,5 +223,9 @@ public class InMemoryTaskManager implements TaskManager {
             statusEpicTask = "IN_PROGRESS";
         }
         return statusEpicTask;
+    }
+
+    public List<Task> getHistoryStorage() {
+        return historyStorage;
     }
 }
