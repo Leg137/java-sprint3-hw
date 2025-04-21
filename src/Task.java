@@ -11,8 +11,8 @@ public class Task {
      * Конструктор для создания Task задач
      */
     Task(String nameTask, String descriptionTask, String statusTask) {
-        this.id = Manager.getId() + 1; // При создании задачи менеджер присваивает ей новый идентификатор
-        Manager.setId(this.id);
+        this.id = InMemoryTaskManager.getId() + 1; // При создании задачи менеджер присваивает ей новый идентификатор
+        InMemoryTaskManager.setId(this.id);
         this.name = nameTask;
         this.description = descriptionTask;
         this.status = statusTask;
@@ -22,8 +22,8 @@ public class Task {
      * Конструктор для создания задач наследников Epic задач и SubTask подзадач
      */
     Task(String nameTask, String descriptionTask) {
-        this.id = Manager.getId() + 1; // При создании задачи менеджер присваивает ей новый идентификатор
-        Manager.setId(this.id);
+        this.id = InMemoryTaskManager.getId() + 1; // При создании задачи менеджер присваивает ей новый идентификатор
+        InMemoryTaskManager.setId(this.id);
         this.name = nameTask;
         this.description = descriptionTask;
     }

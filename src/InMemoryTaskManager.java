@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 /**
- * Класс для объекта-менеджера
+ * Менеджер хранит всю информацию в оперативной памяти
  */
-public class Manager {
+public class InMemoryTaskManager implements TaskManager {
     private static int Id = 0; // У каждого типа задач есть идентификатор, целое, уникальное для всех типов задач число
     // Возможность хранить задачи всех типов
     private final TreeMap<Integer, Task> taskStorage = new TreeMap<>();
@@ -21,15 +21,18 @@ public class Manager {
         Id = id;
     }
 
-    TreeMap<Integer, Task> getTaskStorage() {
+    @Override
+    public TreeMap<Integer, Task> getTaskStorage() {
         return taskStorage;
     }
 
-    TreeMap<Integer, EpicTask> getEpicTaskStorage() {
+    @Override
+    public TreeMap<Integer, EpicTask> getEpicTaskStorage() {
         return epicTaskStorage;
     }
 
-    TreeMap<Integer, EpicTask.SubTask> getSubTaskStorage() {
+    @Override
+    public TreeMap<Integer, EpicTask.SubTask> getSubTaskStorage() {
         return subTaskStorage;
     }
     // Методы для каждого из типа задач(Задача/Эпик/Подзадача):
@@ -37,7 +40,8 @@ public class Manager {
     /**
      * Метод для сохранения задач всех типов.
      */
-    void saveToStorage(Object object) {
+    @Override
+    public void saveToStorage(Object object) {
         switch (object.getClass().toString()) {
             case "class Task": {
                 taskStorage.put(((Task) object).getId(), (Task) object);
@@ -57,7 +61,8 @@ public class Manager {
     /**
      * Получение списка всех задач;
      */
-    ArrayList<Object> getCompleteListOfAnyTasks(TreeMap<Integer, ? extends Task> treeMap) {
+    @Override
+    public ArrayList<Object> getCompleteListOfAnyTasks(TreeMap<Integer, ? extends Task> treeMap) {
         ArrayList<Object> completeListOfAnyTasks = new ArrayList<>();
 
         for (Integer key : treeMap.keySet()) {
@@ -69,14 +74,16 @@ public class Manager {
     /**
      * Удаление всех задач;
      */
-    void deleteAllTasksOfAnyType(TreeMap<Integer, ? extends Task> treeMap) {
+    @Override
+    public void deleteAllTasksOfAnyType(TreeMap<Integer, ? extends Task> treeMap) {
         treeMap.clear();
     }
 
     /**
      * Получение по идентификатору;
      */
-    Object getTaskOfAnyTypeById(int id) {
+    @Override
+    public Object getTaskOfAnyTypeById(int id) {
         Object taskOfAnyKind = null;
 
         if (taskStorage.get(id) != null) {
@@ -92,7 +99,8 @@ public class Manager {
     /**
      * Создание. Сам объект должен передаваться в качестве параметра;
      */
-    Object createCopyOfTaskOfAnyType(Object object) {
+    @Override
+    public Object createCopyOfTaskOfAnyType(Object object) {
         switch (object.getClass().toString()) {
             case "class Task": {
                 return new Task((Task) object);
@@ -111,7 +119,8 @@ public class Manager {
     /**
      * Обновление. Новая версия объекта с верным идентификатором передаются в виде параметра;
      */
-    void updateTaskOfAnyType(int id, Object object) {
+    @Override
+    public void updateTaskOfAnyType(int id, Object object) {
         switch (object.getClass().toString()) {
             case "class Task": {
                 taskStorage.put(id, (Task) object);
@@ -131,7 +140,8 @@ public class Manager {
     /**
      * Удаление по идентификатору.
      */
-    void removeTaskOfAnyTypeById(int id) {
+    @Override
+    public void removeTaskOfAnyTypeById(int id) {
         for (Integer task : taskStorage.keySet()) {
             if (id == task) {
                 taskStorage.remove(id);
@@ -156,7 +166,8 @@ public class Manager {
      * Дополнительные методы:
      * Получение списка всех подзадач определённого эпика.
      */
-    ArrayList<EpicTask.SubTask> getCompleteListOfSubTaskByEpicTask(EpicTask epicTask) {
+    @Override
+    public ArrayList<EpicTask.SubTask> getCompleteListOfSubTaskByEpicTask(EpicTask epicTask) {
         return epicTask.getSubTasks();
     }
 

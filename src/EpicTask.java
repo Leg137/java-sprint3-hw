@@ -12,7 +12,7 @@ public class EpicTask extends Task {
      */
     EpicTask(String nameEpicTask, String descriptionEpicTask, ArrayList<SubTask> subTasks) {
         super(nameEpicTask, descriptionEpicTask);
-        this.setStatus(Manager.getEpicTaskStatus(subTasks)); // Метод для управления статусом для Epic задач.
+        this.setStatus(InMemoryTaskManager.getEpicTaskStatus(subTasks)); // Метод для управления статусом для Epic задач.
         this.subTasks = subTasks;
     }
 
@@ -36,7 +36,7 @@ public class EpicTask extends Task {
     /**
      * Внутренний класс для создания подзадачи, SubTask подзадач для Epic задач
      */
-    static class SubTask extends Task {
+    public static class SubTask extends Task {
         private final String nameEpicTask; // в рамках какого эпика выполняется
 
         /**
