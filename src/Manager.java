@@ -1,19 +1,18 @@
 import java.util.ArrayList;
 import java.util.TreeMap;
+
 /**
  * Класс для объекта-менеджера
  */
 public class Manager {
-    private static int Id = 0;
-
+    private static int Id = 0; // У каждого типа задач есть идентификатор, целое, уникальное для всех типов задач число
+    // Возможность хранить задачи всех типов
     private final TreeMap<Integer, Task> taskStorage = new TreeMap<>();
 
     private final TreeMap<Integer, EpicTask> epicTaskStorage = new TreeMap<>();
 
     private final TreeMap<Integer, EpicTask.SubTask> subTaskStorage = new TreeMap<>();
-/**
- * get и set методы
- */
+
     static int getId() {
         return Id;
     }
@@ -33,9 +32,11 @@ public class Manager {
     TreeMap<Integer, EpicTask.SubTask> getSubTaskStorage() {
         return subTaskStorage;
     }
+    // Методы для каждого из типа задач(Задача/Эпик/Подзадача):
+
     /**
- * 1. Метод для сохранения задач всех типов.
- */
+     * Метод для сохранения задач всех типов.
+     */
     void saveToStorage(Object object) {
         switch (object.getClass().toString()) {
             case "class Task": {
@@ -52,27 +53,29 @@ public class Manager {
             }
         }
     }
+
     /**
- * 2. Методы для каждого из типа задач(Задача/Эпик/Подзадача):
- *  2.1 Получение списка всех задач;
- */
+     * Получение списка всех задач;
+     */
     ArrayList<Object> getCompleteListOfAnyTasks(TreeMap<Integer, ? extends Task> treeMap) {
         ArrayList<Object> completeListOfAnyTasks = new ArrayList<>();
 
-            for (Integer key : treeMap.keySet()) {
-                completeListOfAnyTasks.add(treeMap.get(key));
-            }
+        for (Integer key : treeMap.keySet()) {
+            completeListOfAnyTasks.add(treeMap.get(key));
+        }
         return completeListOfAnyTasks;
     }
+
     /**
- *  2.2 Удаление всех задач;
- */
+     * Удаление всех задач;
+     */
     void deleteAllTasksOfAnyType(TreeMap<Integer, ? extends Task> treeMap) {
         treeMap.clear();
     }
+
     /**
- *  2.3 Получение по идентификатору;
- */
+     * Получение по идентификатору;
+     */
     Object getTaskOfAnyTypeById(int id) {
         Object taskOfAnyKind = null;
 
@@ -85,9 +88,10 @@ public class Manager {
         }
         return taskOfAnyKind;
     }
-/**
- *  2.4 Создание. Сам объект должен передаваться в качестве параметра;
- */
+
+    /**
+     * Создание. Сам объект должен передаваться в качестве параметра;
+     */
     Object createCopyOfTaskOfAnyType(Object object) {
         switch (object.getClass().toString()) {
             case "class Task": {
@@ -103,9 +107,10 @@ public class Manager {
                 return null;
         }
     }
-/**
- *  2.5 Обновление. Новая версия объекта с верным идентификатором передаются в виде параметра;
- */
+
+    /**
+     * Обновление. Новая версия объекта с верным идентификатором передаются в виде параметра;
+     */
     void updateTaskOfAnyType(int id, Object object) {
         switch (object.getClass().toString()) {
             case "class Task": {
@@ -122,9 +127,10 @@ public class Manager {
             }
         }
     }
-/**
- *  2.6 Удаление по идентификатору.
- */
+
+    /**
+     * Удаление по идентификатору.
+     */
     void removeTaskOfAnyTypeById(int id) {
         for (Integer task : taskStorage.keySet()) {
             if (id == task) {
@@ -145,16 +151,20 @@ public class Manager {
             }
         }
     }
-/**
- * 3. Дополнительные методы:
- *  3.1 Получение списка всех подзадач определённого эпика.
- */
+
+    /**
+     * Дополнительные методы:
+     * Получение списка всех подзадач определённого эпика.
+     */
     ArrayList<EpicTask.SubTask> getCompleteListOfSubTaskByEpicTask(EpicTask epicTask) {
         return epicTask.getSubTasks();
     }
-/**
- * 4. Метод для управления статусом для эпик задач.
- */
+
+    /**
+     * Метод для управления статусом для Epic задач.
+     * Если у эпика нет подзадач или все они имеют статус NEW | DONE, то статус должен быть NEW | DONE.
+     * Во всех остальных случаях статус должен быть IN_PROGRESS.
+     */
     static String getEpicTaskStatus(ArrayList<EpicTask.SubTask> subTasks) {
         String statusEpicTask;
         int countNew = 0;
@@ -168,14 +178,11 @@ public class Manager {
                 countDone++;
             }
         }
-/**
- * Если у эпика нет подзадач или все они имеют статус NEW | DONE, то статус должен быть NEW | DONE.
- * Во всех остальных случаях статус должен быть IN_PROGRESS.
- */
+
         if ((subTasks.isEmpty()) || (countNew == subTasks.size())) {
-            statusEpicTask = "NEW";
+            statusEpicTask = "NEW"; // если у эпика нет подзадач или все они имеют статус NEW, то статус должен быть NEW
         } else if (countDone == subTasks.size()) {
-            statusEpicTask = "DONE";
+            statusEpicTask = "DONE"; // если все подзадачи имеют статус DONE, эпик считается завершённым, статус DONE
         } else {
             statusEpicTask = "IN_PROGRESS";
         }

@@ -1,42 +1,44 @@
+/**
+ * Класс для создания обычных задач, Task задач
+ */
 public class Task {
-/**
- * Класс для создания Task задач
- */
-    private final int id;
-    private final String name;
-    private final String description;
-    private String status;
-/**
- * Конструктор для создания Task задач
- */
+    private final int id; // Уникальный идентификационный номер задачи, по которому её можно будет найти
+    private final String name; // Название, кратко описывающее суть задачи
+    private final String description; // Описание, в котором раскрываются детали
+    private String status; // Статус, отображающий её прогресс
+
+    /**
+     * Конструктор для создания Task задач
+     */
     Task(String nameTask, String descriptionTask, String statusTask) {
-        this.id = Manager.getId() + 1;
+        this.id = Manager.getId() + 1; // При создании задачи менеджер присваивает ей новый идентификатор
         Manager.setId(this.id);
         this.name = nameTask;
         this.description = descriptionTask;
         this.status = statusTask;
     }
-/**
- * Конструктор для создания задач наследников Epic задач и SubTask подзадач
- */
+
+    /**
+     * Конструктор для создания задач наследников Epic задач и SubTask подзадач
+     */
     Task(String nameTask, String descriptionTask) {
-        this.id = Manager.getId() + 1;
+        this.id = Manager.getId() + 1; // При создании задачи менеджер присваивает ей новый идентификатор
         Manager.setId(this.id);
         this.name = nameTask;
         this.description = descriptionTask;
     }
-/**
- * Конструктор для копирования Task задач
- */
+
+    /**
+     * Конструктор для копирования Task задач
+     */
     Task(Task task) {
         this(task.name, task.description, task.status);
     }
-/**
- * get и set методы
- */
+
     int getId() {
         return id;
     }
+
     String getName() {
         return name;
     }

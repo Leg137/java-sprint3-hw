@@ -1,28 +1,28 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+
 /**
- * Класс для создания Epic задач
+ * Класс для создания Epic задачи
  */
 public class EpicTask extends Task {
-    private final ArrayList<SubTask> subTasks;
+    private final ArrayList<SubTask> subTasks; // какие подзадачи входят
 
     /**
- * Конструктор для создания Epic задач
- */
+     * Конструктор для создания Epic задач
+     */
     EpicTask(String nameEpicTask, String descriptionEpicTask, ArrayList<SubTask> subTasks) {
         super(nameEpicTask, descriptionEpicTask);
-        this.setStatus(Manager.getEpicTaskStatus(subTasks)); // 4. Метод для управления статусом для эпик задач.
+        this.setStatus(Manager.getEpicTaskStatus(subTasks)); // Метод для управления статусом для Epic задач.
         this.subTasks = subTasks;
     }
+
     /**
- * Конструктор для копирования Epic задач
- */
+     * Конструктор для копирования Epic задач
+     */
     EpicTask(EpicTask epicTask) {
         this(epicTask.getName(), epicTask.getDescription(), epicTask.subTasks);
     }
-/**
- * get метод
- */
+
     ArrayList<SubTask> getSubTasks() {
         return subTasks;
     }
@@ -32,21 +32,24 @@ public class EpicTask extends Task {
         return "ID задачи Epic=\"" + getId() + "\", Название Epic задачи=\"" + getName() + "\", Описание=\"" + getDescription() + "\""
                 + ", " + Arrays.toString(subTasks.toArray()) + ", Статус=\"" + getStatus() + "\"";
     }
+
     /**
- * Внутренний класс для создания SubTask подзадач Epic задач
- */
+     * Внутренний класс для создания подзадачи, SubTask подзадач для Epic задач
+     */
     static class SubTask extends Task {
-        private final String nameEpicTask;
-/**
- * Конструктор внутреннего класса для создания SubTask подзадач Epic задач
- */
+        private final String nameEpicTask; // в рамках какого эпика выполняется
+
+        /**
+         * Конструктор внутреннего класса для создания SubTask подзадач Epic задач
+         */
         SubTask(String nameEpicTask, String nameSubTask, String descriptionSubTask, String statusSubTask) {
             super(nameSubTask, descriptionSubTask, statusSubTask);
             this.nameEpicTask = nameEpicTask;
         }
-/**
- * Конструктор для копирования SubTask подзадач Epic задач
- */
+
+        /**
+         * Конструктор для копирования SubTask подзадач Epic задач
+         */
         SubTask(SubTask subtask) {
             this(subtask.nameEpicTask, subtask.getName(), subtask.getDescription(), subtask.getStatus());
         }
