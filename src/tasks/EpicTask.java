@@ -1,3 +1,7 @@
+package tasks;
+
+import managers.InMemoryTaskManager;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -10,7 +14,7 @@ public class EpicTask extends Task {
     /**
      * Конструктор для создания Epic задач
      */
-    EpicTask(String nameEpicTask, String descriptionEpicTask, ArrayList<SubTask> subTasks) {
+    public EpicTask(String nameEpicTask, String descriptionEpicTask, ArrayList<SubTask> subTasks) {
         super(nameEpicTask, descriptionEpicTask);
         this.setStatus(InMemoryTaskManager.getEpicTaskStatus(subTasks)); // Метод для управления статусом для Epic задач.
         this.subTasks = subTasks;
@@ -19,11 +23,11 @@ public class EpicTask extends Task {
     /**
      * Конструктор для копирования Epic задач
      */
-    EpicTask(EpicTask epicTask) {
+    public EpicTask(EpicTask epicTask) {
         this(epicTask.getName(), epicTask.getDescription(), epicTask.subTasks);
     }
 
-    ArrayList<SubTask> getSubTasks() {
+    public ArrayList<SubTask> getSubTasks() {
         return subTasks;
     }
 
@@ -42,7 +46,7 @@ public class EpicTask extends Task {
         /**
          * Конструктор внутреннего класса для создания SubTask подзадач Epic задач
          */
-        SubTask(String nameEpicTask, String nameSubTask, String descriptionSubTask, String statusSubTask) {
+        public SubTask(String nameEpicTask, String nameSubTask, String descriptionSubTask, Status statusSubTask) {
             super(nameSubTask, descriptionSubTask, statusSubTask);
             this.nameEpicTask = nameEpicTask;
         }
@@ -50,7 +54,7 @@ public class EpicTask extends Task {
         /**
          * Конструктор для копирования SubTask подзадач Epic задач
          */
-        SubTask(SubTask subtask) {
+        public SubTask(SubTask subtask) {
             this(subtask.nameEpicTask, subtask.getName(), subtask.getDescription(), subtask.getStatus());
         }
 

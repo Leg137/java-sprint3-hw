@@ -1,3 +1,7 @@
+package tasks;
+
+import managers.InMemoryTaskManager;
+
 /**
  * Класс для создания обычных задач, Task задач
  */
@@ -5,12 +9,12 @@ public class Task {
     private final int id; // Уникальный идентификационный номер задачи, по которому её можно будет найти
     private final String name; // Название, кратко описывающее суть задачи
     private final String description; // Описание, в котором раскрываются детали
-    private String status; // Статус, отображающий её прогресс
+    private Status status; // Статус, отображающий её прогресс
 
     /**
      * Конструктор для создания Task задач
      */
-    Task(String nameTask, String descriptionTask, String statusTask) {
+    public Task(String nameTask, String descriptionTask, Status statusTask) {
         this.id = InMemoryTaskManager.getId() + 1; // При создании задачи менеджер присваивает ей новый идентификатор
         InMemoryTaskManager.setId(this.id);
         this.name = nameTask;
@@ -31,11 +35,11 @@ public class Task {
     /**
      * Конструктор для копирования Task задач
      */
-    Task(Task task) {
+    public Task(Task task) {
         this(task.name, task.description, task.status);
     }
 
-    int getId() {
+    public int getId() {
         return id;
     }
 
@@ -47,17 +51,23 @@ public class Task {
         return description;
     }
 
-    String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    void setStatus(String status) {
+    void setStatus(Status status) {
         this.status = status;
     }
 
     @Override
     public String toString() {
-        return "ID задачи Task=\"" + id + "\", Название задачи=\"" + name + "\", Описание=\"" + description
+        return "ID задачи tasks.Task=\"" + id + "\", Название задачи=\"" + name + "\", Описание=\"" + description
                 + "\", Статус=\"" + status + "\"";
+    }
+
+    public enum Status {
+        NEW,
+        DONE,
+        IN_PROGRESS
     }
 }

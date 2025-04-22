@@ -1,5 +1,9 @@
+package managers;
+
+import tasks.EpicTask;
+import tasks.Task;
+
 import java.util.ArrayList;
-import java.util.List;
 import java.util.TreeMap;
 
 public interface TaskManager {
@@ -24,6 +28,4 @@ public interface TaskManager {
     void removeTaskOfAnyTypeById(int id);
 
     ArrayList<EpicTask.SubTask> getCompleteListOfSubTaskByEpicTask(EpicTask epicTask);
-
-    List<Task> getHistory();
 }

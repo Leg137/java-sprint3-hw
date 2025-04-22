@@ -1,15 +1,19 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeMap;
+package managers;
+
+import tasks.EpicTask;
+import tasks.Task;
+
+import java.util.*;
 
 /**
  * Менеджер хранит всю информацию в оперативной памяти
  */
 public class InMemoryTaskManager implements TaskManager {
+    protected HistoryManager historyManager = Managers.getDefaultHistory();
+
     private static int Id = 0; // У каждого типа задач есть идентификатор, целое, уникальное для всех типов задач число
     // Возможность хранить задачи всех типов
-    private final List<Task> historyStorage = new LinkedList<>();
+
 
     private final TreeMap<Integer, Task> taskStorage = new TreeMap<>();
 
@@ -17,30 +21,12 @@ public class InMemoryTaskManager implements TaskManager {
 
     private final TreeMap<Integer, EpicTask.SubTask> subTaskStorage = new TreeMap<>();
 
-    static int getId() {
+    public static int getId() {
         return Id;
     }
 
-    static void setId(int id) {
+    public static void setId(int id) {
         Id = id;
-    }
-
-    @Override
-    public List<Task> getHistory() {
-        /*List<Task> taskHistory = new ArrayList<>();
-        if (!getHistoryStorage().isEmpty()) {
-            taskHistory = getHistoryStorage();
-        }*/
-        List<Task> tasks = new ArrayList<>();
-        if (!getHistoryStorage().isEmpty()) {
-            tasks.addAll(getHistoryStorage());
-            if (tasks.size() > 10) {
-                return tasks.subList(tasks.size() - 10, tasks.size());
-            } else {
-                return tasks;
-            }
-        }
-        return tasks;
     }
 
     @Override
@@ -65,15 +51,15 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void saveToStorage(Object object) {
         switch (object.getClass().toString()) {
-            case "class Task": {
+            case "class tasks.Task": {
                 taskStorage.put(((Task) object).getId(), (Task) object);
                 break;
             }
-            case "class EpicTask": {
+            case "class tasks.EpicTask": {
                 epicTaskStorage.put(((EpicTask) object).getId(), (EpicTask) object);
                 break;
             }
-            case "class EpicTask$SubTask": {
+            case "class tasks.EpicTask$SubTask": {
                 subTaskStorage.put(((EpicTask.SubTask) object).getId(), (EpicTask.SubTask) object);
                 break;
             }
@@ -110,13 +96,13 @@ public class InMemoryTaskManager implements TaskManager {
 
         if (taskStorage.get(id) != null) {
             taskOfAnyKind = taskStorage.get(id);
-            historyStorage.add(taskOfAnyKind);
+            historyManager.add(taskOfAnyKind);
         } else if (epicTaskStorage.get(id) != null) {
             taskOfAnyKind = epicTaskStorage.get(id);
-            historyStorage.add(taskOfAnyKind);
+            historyManager.add(taskOfAnyKind);
         } else if (subTaskStorage.get(id) != null) {
             taskOfAnyKind = subTaskStorage.get(id);
-            historyStorage.add(taskOfAnyKind);
+            historyManager.add(taskOfAnyKind);
         }
         return taskOfAnyKind;
     }
@@ -127,13 +113,13 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Object createCopyOfTaskOfAnyType(Object object) {
         switch (object.getClass().toString()) {
-            case "class Task": {
+            case "class tasks.Task": {
                 return new Task((Task) object);
             }
-            case "class EpicTask$SubTask": {
+            case "class tasks.EpicTask$SubTask": {
                 return new EpicTask.SubTask((EpicTask.SubTask) object);
             }
-            case "class EpicTask": {
+            case "class tasks.EpicTask": {
                 return new EpicTask((EpicTask) object);
             }
             default:
@@ -147,15 +133,15 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateTaskOfAnyType(int id, Object object) {
         switch (object.getClass().toString()) {
-            case "class Task": {
+            case "class tasks.Task": {
                 taskStorage.put(id, (Task) object);
                 break;
             }
-            case "class EpicTask": {
+            case "class tasks.EpicTask": {
                 epicTaskStorage.put(id, (EpicTask) object);
                 break;
             }
-            case "class EpicTask$SubTask": {
+            case "class tasks.EpicTask$SubTask": {
                 subTaskStorage.put(id, (EpicTask.SubTask) object);
                 break;
             }
@@ -201,31 +187,27 @@ public class InMemoryTaskManager implements TaskManager {
      * Если у эпика нет подзадач или все они имеют статус NEW | DONE, то статус должен быть NEW | DONE.
      * Во всех остальных случаях статус должен быть IN_PROGRESS.
      */
-    static String getEpicTaskStatus(ArrayList<EpicTask.SubTask> subTasks) {
-        String statusEpicTask;
+    public static Task.Status getEpicTaskStatus(ArrayList<EpicTask.SubTask> subTasks) {
+        Task.Status statusEpicTask;
         int countNew = 0;
         int countDone = 0;
 
         for (EpicTask.SubTask subTask : subTasks) {
-            if (subTask.getStatus().equalsIgnoreCase("NEW")) {
+            if (subTask.getStatus().equals(Task.Status.NEW)) {
                 countNew++;
             }
-            if (!subTask.getStatus().equalsIgnoreCase("DONE")) {
+            if (!subTask.getStatus().equals(Task.Status.DONE)) {
                 countDone++;
             }
         }
 
         if ((subTasks.isEmpty()) || (countNew == subTasks.size())) {
-            statusEpicTask = "NEW"; // если у эпика нет подзадач или все они имеют статус NEW, то статус должен быть NEW
+            statusEpicTask = Task.Status.NEW; // если у эпика нет подзадач или все они имеют статус NEW, то статус должен быть NEW
         } else if (countDone == subTasks.size()) {
-            statusEpicTask = "DONE"; // если все подзадачи имеют статус DONE, эпик считается завершённым, статус DONE
+            statusEpicTask = Task.Status.DONE; // если все подзадачи имеют статус DONE, эпик считается завершённым, статус DONE
         } else {
-            statusEpicTask = "IN_PROGRESS";
+            statusEpicTask = Task.Status.IN_PROGRESS;
         }
         return statusEpicTask;
-    }
-
-    public List<Task> getHistoryStorage() {
-        return historyStorage;
     }
 }
